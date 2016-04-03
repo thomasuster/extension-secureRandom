@@ -8,6 +8,6 @@ public class SecureRandom extends Extension {
         java.security.SecureRandom sr = new java.security.SecureRandom();
         byte[] output = new byte[4];
         sr.nextBytes(output);
-        return output[0]
+        return output[0];
     }
 }
