@@ -3,7 +3,7 @@
 
 namespace secureRandom {
 
-	value _getSecureRandom32();
+	int _getSecureRandom32();
 
 }
 

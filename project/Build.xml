@@ -5,10 +5,10 @@
     <files id="iphone">
         <compilerflag value="-Iinclude"/>
         <file name="common/ExternalInterface.cpp"/>
-        <file name="iPhone/LocalNotifications.mm"/>
+        <file name="iPhone/SecureRandom.mm"/>
     </files>
 	
-	<target id="NDLL" output="${LIBPREFIX}uuid${MSVC_LIB_VERSION}${DEBUGEXTRA}${LIBEXTRA}" tool="linker" toolid="${STD_MODULE_LINK}">
+	<target id="NDLL" output="${LIBPREFIX}secureRandom${MSVC_LIB_VERSION}${DEBUGEXTRA}${LIBEXTRA}" tool="linker" toolid="${STD_MODULE_LINK}">
 		
 		<outdir name="../ndll/${BINDIR}"/>
 		<ext value=".ndll" if="windows || mac || linux"/>

@@ -5,9 +5,9 @@
 
     <section if="android">
         <dependency name="extension-secureRandom" path="android" if="android" />
-        <android extension="com.thomasuster.LocalNotifications" />
+        <android extension="com.thomasuster.SecureRandom" />
     </section>
     
-    <ndll name="uuid" if="ios"/>
+    <ndll name="secureRandom" if="ios"/>
 
 </extension>

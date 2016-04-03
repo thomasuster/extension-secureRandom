@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIApplication.h>
 #import <UIKit/UIKit.h>
-
+#include <hx/CFFI.h>
 namespace secureRandom {
-    value _getSecureRandom32()
+    int _getSecureRandom32()
     {
         FILE *fp = fopen("/dev/random", "r");
 
@@ -12,7 +12,7 @@ namespace secureRandom {
             exit(-1);
         }
 
-        uint_t value = 0;
+        uint32_t value = 0;
         int i;
         for (i=0; i<sizeof(value); i++) {
             value <<= 8;
@@ -21,9 +21,10 @@ namespace secureRandom {
 
         fclose(fp);
 
-        char * str = "";
-        str += boost::lexical_cast<std::string>(val);
+        return (int) value;
     }
+
+
 }
 
 
