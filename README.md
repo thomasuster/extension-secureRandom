@@ -6,7 +6,7 @@
 haxelib dev extension-secureRandom extension-secureRandom
 ```
 
-```
+```haxe
 var sr:SecureRandom;
 #if android
 sr = new AndroidSecureRandom();
