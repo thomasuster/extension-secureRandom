@@ -1,4 +1,4 @@
-## NME extension for Android & iOS secure random bytes
+## NME extension for Android & iOS secure random Ints
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE.md)
 
