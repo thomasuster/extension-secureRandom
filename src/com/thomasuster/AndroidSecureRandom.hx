@@ -18,7 +18,7 @@ class AndroidSecureRandom implements SecureRandom {
     function init():Void {
         if(_getSecureRandom32 == null) {
             #if android
-            _getSecureRandom32 = JNI.createStaticMethod("com/thomasuster/SecureRandom", "getSecureRandom32", "()I");
+            _getSecureRandom32 = JNI.createStaticMethod("com/thomasuster/secureRandom/SecureRandom", "getSecureRandom32", "()I");
             #end
         }
     }
