@@ -5,7 +5,7 @@
 
     <section if="android">
         <dependency name="extension-secureRandom" path="android" if="android" />
-        <android extension="com.thomasuster.SecureRandom" />
+        <android extension="com.thomasuster.secureRandom.SecureRandom" />
     </section>
     
     <ndll name="secureRandom" if="ios"/>

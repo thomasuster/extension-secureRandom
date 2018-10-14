@@ -1,4 +1,5 @@
-package com.thomasuster;
+package com.thomasuster.secureRandom;
+
 import org.haxe.extension.Extension;
 public class SecureRandom extends Extension {
 
