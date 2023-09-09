@@ -12,6 +12,12 @@ value getSecureRandom32() {
 }
 DEFINE_PRIM (getSecureRandom32,0);
 
+value makeUUID() {
+    const char * returnValue = _makeUUID();
+    return alloc_string(returnValue);
+}
+DEFINE_PRIM (makeUUID,0);
+
 extern "C" void SecureRandom_main () {
 
 }

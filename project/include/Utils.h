@@ -4,7 +4,7 @@
 namespace secureRandom {
 
 	int _getSecureRandom32();
-
+	const char* _makeUUID();
 }
 
 #endif

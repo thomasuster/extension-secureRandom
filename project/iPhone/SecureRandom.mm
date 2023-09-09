@@ -24,6 +24,14 @@ namespace secureRandom {
         return (int) value;
     }
 
+    const char* _makeUUID()
+    {
+        NSUUID *uuid = [NSUUID UUID];
+        NSString *uuidString = [uuid UUIDString];
+        const char *cString = [uuidString UTF8String];
+        return cString;
+    }
+
 
 }
 
