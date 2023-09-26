@@ -3,11 +3,7 @@
 #import <UIKit/UIKit.h>
 #include <hx/CFFI.h>
 #import <Security/Security.h>
-
-#define kPublicKeyTag "com.apple.sample.publickey"
 namespace secureRandom {
-
-static NSString *serviceName = @"com.mycompany.myAppServiceName";
 
     NSMutableDictionary * newSearchDictionary(NSString * identifier) {
       NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
@@ -17,7 +13,12 @@ static NSString *serviceName = @"com.mycompany.myAppServiceName";
       NSData *encodedIdentifier = [identifier dataUsingEncoding:NSUTF8StringEncoding];
       [searchDictionary setObject:encodedIdentifier forKey:(id)kSecAttrGeneric];
       [searchDictionary setObject:encodedIdentifier forKey:(id)kSecAttrAccount];
-      [searchDictionary setObject:serviceName forKey:(id)kSecAttrService];
+      static NSString *bundleName = nil;
+
+      if (!bundleName) {
+          bundleName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+      }
+      [searchDictionary setObject:bundleName forKey:(id)kSecAttrService];
 
       return searchDictionary;
     }
@@ -51,7 +52,8 @@ static NSString *serviceName = @"com.mycompany.myAppServiceName";
         return cString;
     }
 
-    //https://useyourloaf.com/blog/simple-iphone-keychain-access/
+
+    // References from https://useyourloaf.com/blog/simple-iphone-keychain-access/
     bool _setKeychain(const char *inKey, const char *value) {
           NSLog(@"My value char: %s", value);
           NSString *identifier = [NSString stringWithUTF8String:inKey];
@@ -88,30 +90,7 @@ static NSString *serviceName = @"com.mycompany.myAppServiceName";
 
           [searchDictionary release];
           const char *resultString = (const char *)[result bytes];
-          NSLog(@"My const char: %s", resultString);
           return resultString;
-
-//         NSString *keyString = [NSString stringWithUTF8String:inKey];
-//         NSData* tag = [keyString dataUsingEncoding:NSUTF8StringEncoding];
-//         NSDictionary *getquery = @{ (id)kSecClass: (id)kSecClassKey,
-//                                     (id)kSecAttrApplicationTag: tag,
-//                                     (id)kSecAttrKeyType: (id)kSecAttrKeyTypeRSA,
-//                                     (id)kSecReturnRef: @YES,
-//                                  };
-//         SecKeyRef key = NULL;
-//         OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)getquery,
-//                                               (CFTypeRef *)&key);
-//         if (key) {
-//             NSData* keyData = dataFromKey(key, tag);
-//             NSString *keyStringB64 = [keyData base64EncodedString];
-//             const char * something = "something2";
-//             return something;
-//
-//             CFRelease(key);
-//             return string;
-//         } else {
-//             return NULL;
-//         }
     }
 
     bool _removeKeychain(const char *key) {
