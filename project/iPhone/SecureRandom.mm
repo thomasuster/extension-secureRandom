@@ -78,23 +78,29 @@ namespace secureRandom {
         NSString *identifier = [NSString stringWithUTF8String:inKey];
         NSMutableDictionary *searchDictionary = newSearchDictionary(identifier);
 
-          // Add search attributes
-          [searchDictionary setObject:(id)kSecMatchLimitOne forKey:(id)kSecMatchLimit];
+        // Add search attributes
+        [searchDictionary setObject:(id)kSecMatchLimitOne forKey:(id)kSecMatchLimit];
 
-          // Add search return types
-          [searchDictionary setObject:(id)kCFBooleanTrue forKey:(id)kSecReturnData];
+        // Add search return types
+        [searchDictionary setObject:(id)kCFBooleanTrue forKey:(id)kSecReturnData];
 
-          NSData *result = nil;
-          OSStatus status = SecItemCopyMatching((CFDictionaryRef)searchDictionary,
-                                                (CFTypeRef *)&result);
-
-          [searchDictionary release];
-          const char *resultString = (const char *)[result bytes];
-          return resultString;
+        NSData *result = nil;
+        OSStatus status = SecItemCopyMatching((CFDictionaryRef)searchDictionary,
+                                              (CFTypeRef *)&result);
+        if(result) {
+            const char *resultString = (const char *)[result bytes];
+            return resultString;
+        } else {
+            const char *resultString = "";
+            return resultString;
+        }
     }
 
-    bool _removeKeychain(const char *key) {
-        return false;
+    bool _removeKeychain(const char *inKey) {
+        NSString *identifier = [NSString stringWithUTF8String:inKey];
+        NSMutableDictionary *dictionary = newSearchDictionary(identifier);
+        OSStatus status = SecItemDelete((CFDictionaryRef)dictionary);
+        return status == errSecSuccess;
     }
 
 
