@@ -6,6 +6,7 @@
         <compilerflag value="-Iinclude"/>
         <file name="common/ExternalInterface.cpp"/>
         <file name="iPhone/SecureRandom.mm"/>
+		<compilerflag value="-I../../extensionkit/project/include"/>
     </files>
 	
 	<target id="NDLL" output="${LIBPREFIX}secureRandom${MSVC_LIB_VERSION}${DEBUGEXTRA}${LIBEXTRA}" tool="linker" toolid="${STD_MODULE_LINK}">
