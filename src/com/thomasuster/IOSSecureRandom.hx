@@ -1,7 +1,38 @@
 package com.thomasuster;
 import cpp.Lib;
+import nme.events.EventDispatcher;
+import nme.events.Event;
+import extensionkit.ExtensionKit;
+class KeyChainEvent extends Event {
+    public static inline var COMPLETE = "keychain_complete";
+
+    public var value(default, null): String;
+    public var success(default, null): Bool;
+
+    public function new(type: String, value: String, success: Bool) {
+        this.value = value;
+        this.success = success;
+        super(type, true, true);
+    }
+}
+
+class KeyChainEventDispatcher extends EventDispatcher {
+    public dynamic function onEnd( data : String, success: Bool ):Void {}
+
+    public var eventDispatcherId(default, null):Int = 0;
+
+    public function new() {
+        super();
+        this.eventDispatcherId = ExtensionKit.RegisterEventDispatcher(this);
+        addEventListener(KeyChainEvent.COMPLETE, function(e: Dynamic) {
+            onEnd(e.value, e.success);
+        });
+    }
+}
+
 class IOSSecureRandom implements SecureRandom {
 
+    static var initialized:Bool = false;
     static var _getSecureRandom32:Dynamic;
     static var _makeUUID:Dynamic;
     static var _setKeychain:Dynamic;
@@ -20,46 +51,38 @@ class IOSSecureRandom implements SecureRandom {
         return _makeUUID();  
     }
 
-    public function setKeychain(key:String, value:String):Bool {
+    public function setKeychain(key:String, value:String, onEnd: String -> Bool -> Void):Void {
         init();
-        return _setKeychain(key, value);
+        var d = new KeyChainEventDispatcher();
+        d.onEnd = onEnd;
+        _setKeychain(d.eventDispatcherId, key, value);
     }
 
-    public function getKeychain(key:String):String {
+    public function getKeychain(key:String, onEnd: String -> Bool -> Void):Void {
         init();
-        return _getKeychain(key);
+        var d = new KeyChainEventDispatcher();
+        d.onEnd = onEnd;
+        _getKeychain(d.eventDispatcherId, key);
     }
 
-    public function removeKeychain(key:String):Bool {
+    public function removeKeychain(key:String, onEnd: String -> Bool -> Void):Void {
         init();
-        return _removeKeychain(key);
+        var d = new KeyChainEventDispatcher();
+        d.onEnd = onEnd;
+        _removeKeychain(d.eventDispatcherId, key);
     }
 
     public function init():Void {
-        if(_getSecureRandom32 == null) {
-            #if ios
-            _getSecureRandom32 = Lib.load("secureRandom","getSecureRandom32",0);
-            #end
-        }
-        if(_makeUUID == null) {
-            #if ios
-            _makeUUID = Lib.load("secureRandom","makeUUID",0);
-            #end
-        }
-        if(_setKeychain == null) {
-            #if ios
-            _setKeychain = Lib.load("secureRandom","setKeychain",2);
-            #end
-        }
-        if(_getKeychain == null) {
-            #if ios
-            _getKeychain = Lib.load("secureRandom","getKeychain",1);
-            #end
-        }
-        if(_removeKeychain == null) {
-            #if ios
-            _removeKeychain = Lib.load("secureRandom","removeKeychain",1);
-            #end
-        }
+        if(initialized)
+            return;
+        initialized = true;
+        #if ios
+        _getSecureRandom32 = Lib.load("secureRandom","getSecureRandom32",0);
+        _makeUUID = Lib.load("secureRandom","makeUUID",0);
+        _setKeychain = Lib.load("secureRandom","setKeychain",3);
+        _getKeychain = Lib.load("secureRandom","getKeychain",2);
+        _removeKeychain = Lib.load("secureRandom","removeKeychain",2);
+        #end
+        ExtensionKit.Initialize();
     }
 }

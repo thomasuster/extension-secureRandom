@@ -5,9 +5,9 @@ namespace secureRandom {
 
 	int _getSecureRandom32();
 	const char* _makeUUID();
-	bool _setKeychain(const char *key, const char *value);
-	const char* _getKeychain(const char *key);
-	bool _removeKeychain(const char *key);
+	void _setKeychain(int eventDispacherId, const char *key, const char *value);
+	void _getKeychain(int eventDispacherId, const char *key);
+	void _removeKeychain(int eventDispacherId, const char *key);
 }
 
 #endif

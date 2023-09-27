@@ -18,23 +18,20 @@ value makeUUID() {
 }
 DEFINE_PRIM (makeUUID,0);
 
-value setKeychain(value key, value v) {
-    bool returnValue = _setKeychain(val_string(key), val_string(v));
-    return alloc_bool(returnValue);
+void setKeychain(value eventDispatcherIdValue, value key, value v) {
+    _setKeychain(val_int(eventDispatcherIdValue), val_string(key), val_string(v));
 }
-DEFINE_PRIM (setKeychain,2);
+DEFINE_PRIM (setKeychain,3);
 
-value getKeychain(value key) {
-    const char * returnValue = _getKeychain(val_string(key));
-    return alloc_string(returnValue);
+void getKeychain(value eventDispatcherIdValue, value key) {
+    _getKeychain(val_int(eventDispatcherIdValue), val_string(key));
 }
-DEFINE_PRIM (getKeychain,1);
+DEFINE_PRIM (getKeychain,2);
 
-value removeKeychain(value key) {
-    bool returnValue = _removeKeychain(val_string(key));
-    return alloc_bool(returnValue);
+void removeKeychain(value eventDispatcherIdValue, value key) {
+    _removeKeychain(val_int(eventDispatcherIdValue), val_string(key));
 }
-DEFINE_PRIM (removeKeychain,1);
+DEFINE_PRIM (removeKeychain,2);
 
 extern "C" void SecureRandom_main () {
 
