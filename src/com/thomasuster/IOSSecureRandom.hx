@@ -30,6 +30,31 @@ class KeyChainEventDispatcher extends EventDispatcher {
     }
 }
 
+class KeyChainSuccessEvent extends Event {
+    public static inline var COMPLETE = "keychain_success_complete";
+
+    public var success(default, null): Bool;
+
+    public function new(type: String, success: Bool) {
+        this.success = success;
+        super(type, true, true);
+    }
+}
+
+class KeyChainSuccessEventDispatcher extends EventDispatcher {
+    public dynamic function onEnd( success: Bool ):Void {}
+
+    public var eventDispatcherId(default, null):Int = 0;
+
+    public function new() {
+        super();
+        this.eventDispatcherId = ExtensionKit.RegisterEventDispatcher(this);
+        addEventListener(KeyChainSuccessEvent.COMPLETE, function(e: Dynamic) {
+            onEnd(e.success);
+        });
+    }
+}
+
 class IOSSecureRandom implements SecureRandom {
 
     static var initialized:Bool = false;
@@ -51,9 +76,9 @@ class IOSSecureRandom implements SecureRandom {
         return _makeUUID();  
     }
 
-    public function setKeychain(key:String, value:String, onEnd: String -> Bool -> Void):Void {
+    public function setKeychain(key:String, value:String, onEnd: Bool -> Void):Void {
         init();
-        var d = new KeyChainEventDispatcher();
+        var d = new KeyChainSuccessEventDispatcher();
         d.onEnd = onEnd;
         _setKeychain(d.eventDispatcherId, key, value);
     }
@@ -65,9 +90,9 @@ class IOSSecureRandom implements SecureRandom {
         _getKeychain(d.eventDispatcherId, key);
     }
 
-    public function removeKeychain(key:String, onEnd: String -> Bool -> Void):Void {
+    public function removeKeychain(key:String, onEnd: Bool -> Void):Void {
         init();
-        var d = new KeyChainEventDispatcher();
+        var d = new KeyChainSuccessEventDispatcher();
         d.onEnd = onEnd;
         _removeKeychain(d.eventDispatcherId, key);
     }

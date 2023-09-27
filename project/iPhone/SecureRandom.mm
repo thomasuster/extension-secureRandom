@@ -71,9 +71,8 @@ namespace secureRandom {
 
           if(status == errSecSuccess) {
             dispatch_sync(dispatch_get_main_queue(), ^{
-                    extensionkit::DispatchEventToHaxeInstance(eventDispatcherId, "com.thomasuster.KeyChainEvent",
-                        extensionkit::CSTRING, "keychain_complete",
-                        extensionkit::CSTRING, "",
+                    extensionkit::DispatchEventToHaxeInstance(eventDispatcherId, "com.thomasuster.KeyChainSuccessEvent",
+                        extensionkit::CSTRING, "keychain_success_complete",
                         extensionkit::CBOOL, true,
                         extensionkit::CEND);
 
@@ -87,9 +86,8 @@ namespace secureRandom {
                                             (CFDictionaryRef)updateDictionary);
 
           dispatch_sync(dispatch_get_main_queue(), ^{
-                    extensionkit::DispatchEventToHaxeInstance(eventDispatcherId, "com.thomasuster.KeyChainEvent",
-                        extensionkit::CSTRING, "keychain_complete",
-                        extensionkit::CSTRING, "",
+                    extensionkit::DispatchEventToHaxeInstance(eventDispatcherId, "com.thomasuster.KeyChainSuccessEvent",
+                        extensionkit::CSTRING, "keychain_success_complete",
                         extensionkit::CBOOL, status == errSecSuccess,
                         extensionkit::CEND);
 
@@ -141,9 +139,8 @@ namespace secureRandom {
             NSMutableDictionary *dictionary = newSearchDictionary(identifier);
             OSStatus status = SecItemDelete((CFDictionaryRef)dictionary);
             dispatch_sync(dispatch_get_main_queue(), ^{
-                      extensionkit::DispatchEventToHaxeInstance(eventDispatcherId, "com.thomasuster.KeyChainEvent",
-                          extensionkit::CSTRING, "keychain_complete",
-                          extensionkit::CSTRING, "",
+                      extensionkit::DispatchEventToHaxeInstance(eventDispatcherId, "com.thomasuster.KeyChainSuccessEvent",
+                          extensionkit::CSTRING, "keychain_success_complete",
                           extensionkit::CBOOL, status == errSecSuccess,
                           extensionkit::CEND);
 
