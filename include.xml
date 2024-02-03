@@ -8,7 +8,7 @@
         <android extension="com.thomasuster.secureRandom.SecureRandom" />
     </section>
 
-    <include path="../extensionkit" />
+    <include path="../extensionkit" if="ios" />
     
     <ndll name="secureRandom" if="ios"/>
 
